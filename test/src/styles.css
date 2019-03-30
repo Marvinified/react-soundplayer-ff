@@ -1,0 +1,39 @@
+.waveform-container {
+    max-width: 100%;
+    width: 800px
+}
+
+.waveform-bg {
+    clip-path: url(#waveform-mask);
+    fill: lightgray;
+}
+.waveform-progress {
+    clip-path: url(#waveform-mask);
+    fill: white;
+}
+
+.waveform-wrapper {
+    display: grid;
+    position: relative;
+}
+
+.progress-alter{
+    position: absolute;
+    width: 100%;
+    align-self: center;
+    filter: opacity(0)
+}
+
+.slider-circle{
+    transition: 100ms ease-in 
+}
+
+#stop-1{
+    stop-color:#b74dc3;
+    stop-opacity:.5
+}
+#stop-2{
+    stop-color:#6610ff;
+    stop-opacity:.5
+}
+
