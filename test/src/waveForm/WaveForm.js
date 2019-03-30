@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Progress } from 'react-soundplayer/components';
 import axios from 'axios';
 import './styles.css';
@@ -16,14 +16,20 @@ class WaveForm extends Component {
         super(props);
     }
     componentDidMount() {
+        this.getWaveformData();
+    }
 
+    getWaveformData() {
+        // AudioCOntext
         let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         axios({ url: this.props.audio, responseType: "arraybuffer" }).then(response => {
             let audioData = response.data;
+            // Decoding Audio data to usable format
             audioCtx.decodeAudioData(audioData, buffer => {
                 let decodedAudioData = buffer.getChannelData(0);
                 let bucketDataSize = Math.floor(decodedAudioData.length / NUMBER_OF_BUCKETS);
                 let buckets = [];
+
                 for (var i = 0; i < NUMBER_OF_BUCKETS; i++) {
                     let startingPoint = i * bucketDataSize;
                     let endingPoint = i * bucketDataSize + bucketDataSize;
@@ -36,19 +42,24 @@ class WaveForm extends Component {
                     let size = Math.abs(max);
                     buckets.push(size);
                 }
+                // Log Audio waveform data Array
+                console.log(buckets);
                 this.setState({ buckets });
             }, e => {
                 // callback for any errors with decoding audio data
                 console.log('Error with decoding audio data' + e.err);
             });
         }).catch(err => {
+            // callback for any errors with decoding audio data
             console.log(err);
         });
     }
+
     render() {
         const { currentTime, duration } = this.props;
         return (
             <div className="waveform-wrapper">
+                {/* Use the available Progress API to control timestamps */}
                 <Progress
                     style={{ height: 50 }}
                     className={`progress-alter ${this.props.className}`}
@@ -56,11 +67,14 @@ class WaveForm extends Component {
                     value={this.props.value}
                     onSeekTrack={this.props.onSeekTrack}
                 />
-                {/* <audio id="audio-element" src={this.props.audio} controls="controls" /> */}
-                <svg viewBox="0 0 100 100" className="waveform-container" preserveaspectratio="xMidYMid meet">
+                {/* The waveform svg Dynamic SVG element*/}
+                <svg viewBox="0 0 100 100" className="waveform-container" preserveAspectRatio="xMidYMid meet">
+                    {/* Waveform Default */}
                     <rect id="waveform-bg" className="waveform-bg" x="0" y="0" height="100" width="100" />
+                    {/* Waveform Progress Mask */}
                     <rect id="waveform-progress" className="waveform-progress" x="0" y="0" height="100" width={currentTime / duration * 100} />
-                    <circle className="slider-circle" cx={currentTime / duration * 100} cy="50" r="1.5" fill="black" fillOpacity=".2" />
+                    {/* Waveform slider indicator  circles  */}
+                    <circle className="slider-circle" cx={currentTime / duration * 100} cy="50" r="2" fill="black" fillOpacity=".2" />
                     <circle className="slider-circle" cx={currentTime / duration * 100} cy="50" r="0.5" fill="red" />
                     <rect
                         x={0}
@@ -82,6 +96,7 @@ class WaveForm extends Component {
                                     let bucketSVGHeight = bucket * 10;
                                     return (
                                         <rect
+                                            key={i}
                                             x={bucketSVGWidth * i + SPACE_BETWEEN_BARS / 2.0}
                                             y={(100 - bucketSVGHeight) / 2.0}
                                             width={bucketSVGWidth - SPACE_BETWEEN_BARS}

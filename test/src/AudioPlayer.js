@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactHowler from 'react-howler';
 import PropTypes from 'prop-types';
-import { PlayButton, Progress, Timer } from 'react-soundplayer/components';
-import WaveForm from './WaveForm';
+import { PlayButton, Timer } from 'react-soundplayer/components';
+import WaveForm from './waveForm/WaveForm';
 
 
 const DEFAULT_DURATION = 456.1495; // have to use this become modifying the audio file breaks 2x speed
