@@ -32,6 +32,7 @@ class AudioPlayer extends Component {
         speedup = !speedup;
         this.setState({ speedup });
         this.player._howler.rate(speedup ? 2.0 : 1.0);
+        console.log(this.player);
     }
 
     getState() {
@@ -117,6 +118,7 @@ class AudioPlayer extends Component {
                 }
                 <div>
                     <ReactHowler
+                        html5={true}
                         src={mp3url}
                         playing={playing}
                         loop={false}

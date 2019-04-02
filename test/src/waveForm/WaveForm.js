@@ -5,7 +5,7 @@ import './styles.css';
 
 
 const NUMBER_OF_BUCKETS = 150; // number of "bars" the waveform should have
-const SPACE_BETWEEN_BARS = 0.2; // from 0 (no gaps between bars) to 1 (only gaps - bars won't be visible)
+const SPACE_BETWEEN_BARS = 0.4; // from 0 (no gaps between bars) to 1 (only gaps - bars won't be visible)
 
 class WaveForm extends Component {
     state = {
